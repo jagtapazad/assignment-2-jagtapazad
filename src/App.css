@@ -1,0 +1,360 @@
+/* ==========================================================================
+   Task Manager - INFO 153A/253A Assignment 2 (React)
+   Assignment 1 styles, with the page grid moved from body to .app
+   because React renders inside #root.
+   Layout method: CSS Grid (page layout and component alignment)
+   ========================================================================== */
+
+/* ========== BASE ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --header-bg: #dc4c3e;
+    --header-text: #ffffff;
+    --sidebar-bg: #fefbf2;
+    --sidebar-text: #000000;
+    --count-color: #7e7d79;
+    --border-color: #eceae4;
+    --sidebar-width: 300px;
+}
+
+body {
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--sidebar-text);
+    background: #ffffff;
+}
+
+/* Page layout: header across the top, 300px sidebar, flexible main area */
+.app {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+        "header  header"
+        "sidebar main";
+    min-height: 100vh;
+}
+
+/* Shared icon sizing */
+.icon {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+
+/* Accessible label: available to screen readers, not visible on screen */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* ========== HEADER ========== */
+.app-header {
+    grid-area: header;
+    background: var(--header-bg);
+    color: var(--header-text);
+
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 20px;
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.quick-find {
+    justify-self: start;
+    width: 100%;
+    max-width: 420px;
+
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.quick-find-input {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--header-text);
+}
+
+.quick-find-input::placeholder {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.quick-find-input:focus {
+    outline: none;
+}
+
+.task-counter {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+/* ========== LEFT NAVIGATION ========== */
+.sidebar {
+    grid-area: sidebar;
+    background: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    padding: 20px 12px;
+}
+
+.sidebar-list {
+    list-style: none;
+}
+
+.sidebar-link {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: start;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--sidebar-text);
+}
+
+.sidebar-link.is-active {
+    background: #ffffff;
+    font-weight: 700;
+}
+
+.task-count {
+    font-size: 12px;
+    color: var(--count-color);
+    font-weight: 400;
+}
+
+/* ========== MAIN CONTENT ========== */
+.main-content {
+    grid-area: main;
+    padding: 32px 40px;
+}
+
+.task-section {
+    max-width: 700px;
+}
+
+.section-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.task-list {
+    list-style: none;
+}
+
+.task-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    /* no row gap: the divider is spaced with its own margin */
+    gap: 0 14px;
+    padding-top: 12px;
+}
+
+/* Horizontal rule separating each task, spanning the full row */
+.task-divider {
+    grid-column: 1 / -1;
+    margin-top: 12px;
+    border: none;
+    border-top: 1px solid var(--border-color);
+}
+
+.task-label {
+    cursor: pointer;
+}
+
+/* ========== CIRCULAR CHECKBOXES (CSS only, no images) ========== */
+.task-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #c8c6c0;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+.task-checkbox:hover {
+    border-color: var(--header-bg);
+}
+
+.task-checkbox:checked {
+    background: var(--header-bg);
+    border-color: var(--header-bg);
+}
+
+.task-checkbox:focus-visible {
+    outline: 2px solid var(--header-bg);
+    outline-offset: 2px;
+}
+
+/* ========== ASSIGNMENT 2: INTERACTIVE PIECES ========== */
+
+/* Hover feedback on the existing header and sidebar controls */
+.menu-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-link:hover {
+    background: #ffffff;
+}
+
+/* Add-task form: text input and button on one row */
+.task-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.task-input {
+    font-family: inherit;
+    font-size: 14px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+.task-input:focus {
+    outline: none;
+    border-color: var(--header-bg);
+}
+
+.add-button {
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background: var(--header-bg);
+    color: var(--header-text);
+    cursor: pointer;
+}
+
+.add-button:hover {
+    background: #c3392b;
+}
+
+.add-button:active {
+    transform: scale(0.97);
+}
+
+/* Filter row under the heading: All | Active | Completed */
+.task-filters {
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: start;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    color: var(--count-color);
+}
+
+.filter-button {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--count-color);
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+.filter-button:hover {
+    color: var(--sidebar-text);
+    background: var(--sidebar-bg);
+}
+
+.filter-button.is-active {
+    color: var(--header-bg);
+    font-weight: 700;
+}
+
+/* Delete button: faint until the row is hovered */
+.delete-button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    line-height: 1;
+    color: var(--count-color);
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    opacity: 0.4;
+}
+
+.task-item:hover .delete-button {
+    opacity: 1;
+}
+
+.delete-button:hover {
+    color: var(--header-bg);
+    background: var(--sidebar-bg);
+}
+
+/* Completed tasks: struck through and faded */
+.task-item.is-completed .task-label {
+    text-decoration: line-through;
+    color: var(--count-color);
+}
+
+.task-checkbox:active {
+    transform: scale(0.9);
+}
+
+.empty-state {
+    padding: 24px 0;
+    color: var(--count-color);
+}
+
+/* ========== RESPONSIVE: hide left navigation at 480px or less ========== */
+@media (max-width: 480px) {
+    .app {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "header"
+            "main";
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .main-content {
+        padding: 24px 20px;
+    }
+}
